@@ -49,22 +49,6 @@ const Blogs = () => {
         <div className="bg-accent z-0 w-full h-full absolute top-0 left-0 bg-opacity-10 rounded-[1.3rem] animate-pulse"></div>
         <Image
           src={image}
-          height="3500"
-          width="1500"
-          loading="lazy"
-          alt="plan-img"
-          className="w-full h-full rounded-[1.3rem] transition-transform duration-300 transform group-hover:scale-105"
-          style={{
-            position: "absolute",
-            height: "100%",
-            width: "100%",
-            inset: "0px",
-            objectFit: "cover",
-            color: "transparent",
-          }}
-        />
-        {/* <Image
-          src={image}
           alt={title}
           loading="lazy"
           decoding="async"
@@ -79,7 +63,7 @@ const Blogs = () => {
             objectFit: "cover",
             color: "transparent",
           }}
-        ></Image> */}
+        ></Image>
       </div>
       <div className="pl-5 relative before:absolute before:w-[1px] before:h-[90%] before:bg-white before:left-0 before:top-[50%] before:-translate-y-[50%] group-hover:translate-x-4 custom-animate">
         <p className="text-lg font-semibold mb-1 text-white">Blog</p>
