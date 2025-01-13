@@ -13,7 +13,7 @@ import Menu from "../../../public/imgs/menu.svg";
 const Header = () => {
   const [isSideBarLink, setIsSideBarLinks] = useState(false);
   return (
-    <>
+    <div>
       <div className="py-[1.8rem] section-padding navbar z-30 gap-10 flex items-center justify-between w-full fixed top-0 left-0 backdrop-blur-md">
         <div className="flex items-center gap-[40px] lg:gap-[80px]">
           <Image src={Logo} alt="log" />
@@ -41,7 +41,7 @@ const Header = () => {
             width="18"
             height="18"
             src={Menu}
-            style={{ color: "transparent;" }}
+            style={{ color: "transparent" }}
           />
         </div>
       </div>
@@ -74,7 +74,7 @@ const Header = () => {
           </div>
         </ClickAwayListener>
       )}
-    </>
+    </div>
   );
 };
 
