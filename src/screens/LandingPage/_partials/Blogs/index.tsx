@@ -28,7 +28,7 @@ const Blogs = () => {
     }
   }, [inView]);
 
-  const renderBlogList = ({
+  const RenderBlogList = ({
     link,
     image,
     title,
@@ -116,30 +116,13 @@ const Blogs = () => {
             key={id}
             className="hover:border hover:border-[#064386] rounded-[1.3rem] overflow-hidden"
           >
-            {renderBlogList({
-              link,
-              image,
-              title,
-              date,
-              author,
-            })}
-            <Image
-              src={image}
-              alt={title}
-              loading="lazy"
-              decoding="async"
-              data-nimg="fill"
-              className="w-full h-full rounded-[1.3rem] transition-transform duration-300 transform group-hover:scale-105"
-              sizes="100vw"
-              style={{
-                position: "absolute",
-                height: "100%",
-                width: "100%",
-                inset: "0px",
-                objectFit: "cover",
-                color: "transparent",
-              }}
-            ></Image>
+            <RenderBlogList
+              link={link}
+              image={image}
+              title={title}
+              date={date}
+              author={author}
+            />
           </div>
         ))}
       </div>
