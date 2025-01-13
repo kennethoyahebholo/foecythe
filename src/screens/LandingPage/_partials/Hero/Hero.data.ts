@@ -52,3 +52,25 @@ export const data = [
     img: Image6,
   },
 ];
+
+export const wordsSubText = [
+  "We're",
+  "the",
+  "architects",
+  "of",
+  "digital",
+  "excellence",
+  "across",
+  "industries.",
+  "We",
+  "redefine",
+  "business",
+  "with",
+  "cutting-edge",
+  "digital",
+  "strategies",
+  "that",
+  "invokes",
+  "sector-wide",
+  "transformation",
+];

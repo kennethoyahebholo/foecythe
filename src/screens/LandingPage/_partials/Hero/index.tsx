@@ -1,36 +1,43 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Typewriter } from "react-simple-typewriter";
 import Marquee from "react-fast-marquee";
 import Image from "next/image";
+import { useInView } from "react-intersection-observer";
 
 import { Button } from "@/components";
 
-import { data, words, wordsHeroText } from "./Hero.data";
+import { data, words, wordsHeroText, wordsSubText } from "./Hero.data";
 
 import PlayIcon from "../../../../../public/svgs/PlayIcon";
 
 const Hero = () => {
   const [visibleWords, setVisibleWords] = useState<number>(0);
   const [visibleWordsHeroText, setVisibleWordsHeroText] = useState<number>(0);
+  const [visibleWordsSubText, setVisibleWordsSubText] = useState<number>(0);
   const [isHeroTextCompleted, setIsHeroTextCompleted] = useState(false);
+  const { ref, inView } = useInView({
+    threshold: 0.5,
+    triggerOnce: true,
+  });
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setVisibleWordsHeroText((prev) => {
-        if (prev < wordsHeroText.length - 1) {
-          return prev + 1;
-        } else {
-          clearInterval(interval);
-          setIsHeroTextCompleted(true);
-          return prev + 1;
-        }
-      });
-    }, 300); // Adjust the delay as needed
+    if (inView) {
+      const interval = setInterval(() => {
+        setVisibleWordsHeroText((prev) => {
+          if (prev < wordsHeroText.length - 1) {
+            return prev + 1;
+          } else {
+            clearInterval(interval);
+            setIsHeroTextCompleted(true);
+            return prev + 1;
+          }
+        });
+      }, 300); // Adjust the delay as needed
 
-    return () => clearInterval(interval); // Cleanup interval
-  }, []);
+      return () => clearInterval(interval); // Cleanup interval
+    }
+  }, [inView]);
 
   useEffect(() => {
     if (isHeroTextCompleted) {
@@ -38,12 +45,24 @@ const Hero = () => {
         setVisibleWords((prev) => (prev < words.length ? prev + 1 : prev));
       }, 300); // Adjust the delay as needed
 
-      return () => clearInterval(interval); // Cleanup interval
+      const heroSubTextInterval = setInterval(() => {
+        setVisibleWordsSubText((prev) =>
+          prev < wordsSubText.length ? prev + 1 : prev
+        );
+      }, 300);
+
+      return () => {
+        clearInterval(heroSubTextInterval);
+        clearInterval(interval);
+      };
     }
   }, [isHeroTextCompleted]);
 
   return (
-    <div className="md:min-h-screen bg-[url('/imgs/header-background.svg')] bg-no-repeat bg-top">
+    <div
+      ref={ref}
+      className="md:min-h-screen bg-[url('/imgs/header-background.svg')] bg-no-repeat bg-top"
+    >
       <div className="section-padding">
         <div className="w-full bg-white bg-opacity-10 p-5 py-8 md:p-8 lg:p-10 my-10 rounded-[2rem] sm:rounded-[3rem] h-full lg:h-[416px]">
           <div className="max-w-[56rem] h-full flex flex-col justify-between">
@@ -70,20 +89,25 @@ const Hero = () => {
               </div>
               <div className="mb-8 max-w-3xl">
                 <div>
-                  <p className="text-darkGrey text-base md:text-lg mb-8 leading-7">
-                    {isHeroTextCompleted && (
-                      <Typewriter
-                        words={[
-                          "We're the architects of digital excellence across industries. We redefine business with cutting-edge digital strategies that invokes sector-wide transformation",
-                        ]}
-                        loop={1}
-                        cursor={false}
-                        typeSpeed={70}
-                        deleteSpeed={0}
-                        delaySpeed={1000}
-                      />
-                    )}
-                  </p>
+                  {isHeroTextCompleted && (
+                    <p className="text-darkGrey text-base md:text-lg mb-8 leading-7">
+                      {wordsSubText?.map((word, index) => {
+                        return (
+                          <span
+                            key={index}
+                            className={`inline-block transition-opacity duration-500 ${
+                              index < visibleWordsSubText
+                                ? "opacity-100"
+                                : "opacity-0"
+                            }`}
+                            style={{ marginRight: "0.5rem" }}
+                          >
+                            {word}
+                          </span>
+                        );
+                      })}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

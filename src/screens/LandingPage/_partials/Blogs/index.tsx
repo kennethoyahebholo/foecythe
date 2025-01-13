@@ -1,12 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { Typewriter } from "react-simple-typewriter";
 import { useInView } from "react-intersection-observer";
 
-import { blogData } from "./Blogs.data";
 import { Button } from "@/components";
+import { blogData, words } from "./Blogs.data";
 
 import PlayIcon from "../../../../../public/svgs/PlayIcon";
 
@@ -15,6 +14,19 @@ const Blogs = () => {
     threshold: 0.5,
     triggerOnce: true,
   });
+  const [visibleWords, setVisibleWords] = useState<number>(0);
+
+  useEffect(() => {
+    if (inView) {
+      const interval = setInterval(() => {
+        setVisibleWords((prev) => (prev < words.length ? prev + 1 : prev));
+      }, 300);
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [inView]);
 
   const renderBlogList = ({
     link,
@@ -31,7 +43,7 @@ const Blogs = () => {
   }) => (
     <a
       href={link}
-      className="w-full pb-5 rounded-[1.3rem] relative overflow-hidden cursor-pointer group hover:shadow-sm hover:shadow-[red] transition-all duration-500"
+      className="w-full pb-5 rounded-[1.3rem] relative overflow-hidden cursor-pointer group hover:shadow-sm  transition-all duration-500"
     >
       <div className="h-60 sm:h-56 relative mb-6">
         <div className="bg-accent z-0 w-full h-full absolute top-0 left-0 bg-opacity-10 rounded-[1.3rem] animate-pulse"></div>
@@ -76,16 +88,19 @@ const Blogs = () => {
         <div>
           <div>
             <p className="text-white text-[2rem] leading-[2.5rem] sm:text-[2.2rem] sm:leading-[2.5rem] lg:text-[2.6rem] lg:leading-[3rem] mb-6 sm:mb-4 md:mb-0">
-              {inView && (
-                <Typewriter
-                  words={["Read our articles, news and product blog"]}
-                  loop={1}
-                  cursor={false}
-                  typeSpeed={70}
-                  deleteSpeed={0}
-                  delaySpeed={1000}
-                />
-              )}
+              {words?.map((word, index) => {
+                return (
+                  <span
+                    key={index}
+                    className={`inline-block transition-opacity duration-500 ${
+                      index < visibleWords ? "opacity-100" : "opacity-0"
+                    } `}
+                    style={{ marginRight: "0.5rem" }}
+                  >
+                    {word}
+                  </span>
+                );
+              })}
             </p>
           </div>
         </div>
@@ -97,7 +112,10 @@ const Blogs = () => {
       </div>
       <div className="blogs grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
         {blogData?.map(({ id, link, image, title, date, author }) => (
-          <div key={id}>
+          <div
+            key={id}
+            className="hover:border hover:border-[#064386] rounded-[1.3rem] overflow-hidden"
+          >
             {renderBlogList({
               link,
               image,
