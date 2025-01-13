@@ -53,8 +53,15 @@ const Blogs = () => {
           width="1500"
           loading="lazy"
           alt="plan-img"
-          className="w-full h-[350px] md:w-[95%] md:h-[95%] lg:w-[90%] lg:h-[426px]"
-          style={{ color: "transparent" }}
+          className="w-full h-full rounded-[1.3rem] transition-transform duration-300 transform group-hover:scale-105"
+          style={{
+            position: "absolute",
+            height: "100%",
+            width: "100%",
+            inset: "0px",
+            objectFit: "cover",
+            color: "transparent",
+          }}
         />
         {/* <Image
           src={image}
