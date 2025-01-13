@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import Blog3 from "../../../../../public/imgs/blogTestImg.png";
 import { useInView } from "react-intersection-observer";
 
 import { Button } from "@/components";
@@ -86,23 +85,6 @@ const Blogs = () => {
         ref={ref}
         className="flex flex-col md:flex-row md:justify-between md:items-center mb-12"
       >
-        <Image
-          src={Blog3}
-          alt="hih"
-          loading="lazy"
-          decoding="async"
-          data-nimg="fill"
-          // className="w-full h-full rounded-[1.3rem] transition-transform duration-300 transform group-hover:scale-105"
-          sizes="100vw"
-          // style={{
-          //   position: "absolute",
-          //   height: "100%",
-          //   width: "100%",
-          //   inset: "0px",
-          //   objectFit: "cover",
-          //   color: "transparent",
-          // }}
-        ></Image>
         <div>
           <div>
             <p className="text-white text-[2rem] leading-[2.5rem] sm:text-[2.2rem] sm:leading-[2.5rem] lg:text-[2.6rem] lg:leading-[3rem] mb-6 sm:mb-4 md:mb-0">
@@ -141,6 +123,23 @@ const Blogs = () => {
               date,
               author,
             })}
+            <Image
+              src={image}
+              alt={title}
+              loading="lazy"
+              decoding="async"
+              data-nimg="fill"
+              className="w-full h-full rounded-[1.3rem] transition-transform duration-300 transform group-hover:scale-105"
+              sizes="100vw"
+              style={{
+                position: "absolute",
+                height: "100%",
+                width: "100%",
+                inset: "0px",
+                objectFit: "cover",
+                color: "transparent",
+              }}
+            ></Image>
           </div>
         ))}
       </div>
