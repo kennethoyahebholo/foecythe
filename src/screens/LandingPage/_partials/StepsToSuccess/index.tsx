@@ -1,83 +1,57 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Typewriter } from "react-simple-typewriter";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
+import { useInView } from "react-intersection-observer";
 
+import { IActiveTab } from "./StepsToSuccess.types";
 import { Button } from "@/components";
+import { contentMap, words } from "./StepsToSuccess.data";
 
 import PlayIcon from "../../../../../public/svgs/PlayIcon";
-import Launch from "../../../../../public/imgs/plan-launch.svg";
-import Design from "../../../../../public/imgs/plan-design.svg";
-import Develop from "../../../../../public/imgs/plan-develop.svg";
-import Idea from "../../../../../public/imgs/camera-man.svg";
 
 const StepsToSuccess = () => {
-  const words = [
-    "From",
-    "Spark",
-    "to",
-    "Spotlight:",
-    "we",
-    "take",
-    "you",
-    "every",
-    "step",
-    "of",
-    "the",
-    "way",
-    "to",
-    "success",
-  ];
+  const [activeTab, setActiveTab] = useState<IActiveTab>("Idea");
+  const { ref, inView } = useInView({
+    threshold: 0.5,
+    triggerOnce: true,
+  });
   const [visibleWords, setVisibleWords] = useState<number>(0);
+  const [visibleTitleWords, setVisibleTitleWords] = useState<number>(0);
+  const [visibleDescriptionWords, setVisibleDescriptionWords] =
+    useState<number>(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setVisibleWords((prev) => (prev < words.length ? prev + 1 : prev));
-    }, 300); // Adjust the delay as needed
+    if (inView) {
+      const interval = setInterval(() => {
+        setVisibleWords((prev) => (prev < words.length ? prev + 1 : prev));
+      }, 300); // Adjust the delay as needed
+      // Cleanup interval
 
-    return () => clearInterval(interval); // Cleanup interval
-  }, [words.length]);
+      // Reveal title words
+      const titleInterval = setInterval(() => {
+        setVisibleTitleWords((prev) =>
+          prev < contentMap[activeTab]?.title.length ? prev + 1 : prev
+        );
+      }, 300);
 
-  const [activeTab, setActiveTab] = useState<
-    "Idea" | "Design" | "Develop" | "Launch"
-  >("Idea");
+      // Reveal description words
+      const descriptionInterval = setInterval(() => {
+        setVisibleDescriptionWords((prev) =>
+          prev < contentMap[activeTab]?.description.length ? prev + 1 : prev
+        );
+      }, 300);
 
-  const contentMap: Record<
-    "Idea" | "Design" | "Develop" | "Launch",
-    { title: string[]; description: string[]; image: StaticImageData }
-  > = {
-    Idea: {
-      title: ["Your vision is unique"],
-      description: [
-        "Nurture Your Idea into a Blueprint for Success with our strategic insights and industry expertise. Your vision is unique, let's us shape it.",
-      ],
-      image: Idea,
-    },
-    Design: {
-      title: ["Crafting the blueprint for success"],
-      description: [
-        "Design is more than aesthetics, it's about creating user experiences that resonate and convert. Our design experts shape your vision into a stunning reality.",
-      ],
-      image: Design,
-    },
-    Develop: {
-      title: ["Turning blueprints into reality"],
-      description: [
-        "We breathe life into designs, building robust platforms ready to disrupt markets. Harness the experience of our development team to bring your Concept to Life",
-      ],
-      image: Develop,
-    },
-    Launch: {
-      title: ["Your launchpad to the market"],
-      description: [
-        "Launching is just the beginning; we ensure your product makes a splash and keeps making waves.",
-      ],
-      image: Launch,
-    },
-  };
+      return () => {
+        clearInterval(titleInterval);
+        clearInterval(descriptionInterval);
+        clearInterval(interval);
+      };
+    }
+  }, [inView, activeTab]);
+
   return (
-    <div className="section-padding py-20">
+    <div ref={ref} className="section-padding py-20">
       <div className="mb-12 xl:mb-0 max-w-[45rem]">
         <div>
           <p className="text-[2rem] leading-[2.5rem] sm:text-[2.2rem] sm:leading-[2.5rem] lg:text-[2.5rem] lg:leading-[3rem]">
@@ -106,11 +80,11 @@ const StepsToSuccess = () => {
                 {Object.keys(contentMap).map((tab) => (
                   <div
                     key={tab}
-                    onClick={() =>
-                      setActiveTab(
-                        tab as "Idea" | "Design" | "Develop" | "Launch"
-                      )
-                    }
+                    onClick={() => {
+                      setActiveTab(tab as IActiveTab);
+                      setVisibleTitleWords(0); // Reset for new tab
+                      setVisibleDescriptionWords(0); // Reset for new tab
+                    }}
                     className={`overflow-hidden px-2 md:px-2.5 py-3 md:py-3.5 rounded-full text-center text-base font-medium cursor-pointer transition-all duration-300 ${
                       activeTab === tab
                         ? "bg-accent2 text-black"
@@ -123,27 +97,37 @@ const StepsToSuccess = () => {
               </div>
 
               <p className="text-[1.8rem] sm:text-[2rem] font-[500] leading-8 sm:leading-8 mb-12 animate-fade-in transform duration-1000">
-                <Typewriter
-                  key={activeTab + "-title"}
-                  words={contentMap[activeTab]?.title as string[]}
-                  loop={1}
-                  cursor={false}
-                  typeSpeed={70}
-                  deleteSpeed={0}
-                  delaySpeed={1000}
-                />
+                {contentMap[activeTab]?.title.map((word, index) => {
+                  return (
+                    <span
+                      key={index}
+                      className={`inline-block transition-opacity duration-500 ${
+                        index < visibleTitleWords ? "opacity-100" : "opacity-0"
+                      }`}
+                      style={{ marginRight: "0.5rem" }}
+                    >
+                      {word}
+                    </span>
+                  );
+                })}
               </p>
 
               <p className="text-darkGrey text-base md:text-lg mb-8 leading-7 animate-fade-in transform duration-1000">
-                <Typewriter
-                  key={activeTab + "-description"}
-                  words={contentMap[activeTab]?.description}
-                  loop={1}
-                  cursor={false}
-                  typeSpeed={70}
-                  deleteSpeed={0}
-                  delaySpeed={1000}
-                />
+                {contentMap[activeTab]?.description.map((word, index) => {
+                  return (
+                    <span
+                      key={index}
+                      className={`inline-block transition-opacity duration-500 ${
+                        index < visibleDescriptionWords
+                          ? "opacity-100"
+                          : "opacity-0"
+                      }`}
+                      style={{ marginRight: "0.5rem" }}
+                    >
+                      {word}
+                    </span>
+                  );
+                })}
               </p>
             </div>
 

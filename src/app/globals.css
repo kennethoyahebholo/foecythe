@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: DMSans;
+  font-family: Lexend;
   src: url("../../public/fonts/Lexend-VariableFont_wght.ttf");
 }
 input,

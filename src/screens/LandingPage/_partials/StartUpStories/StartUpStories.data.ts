@@ -1,0 +1,105 @@
+import { StaticImageData } from "next/image";
+
+import Starks from "../../../../../public/imgs/starks.svg";
+import ExecutivePros from "../../../../../public/imgs/ExecutivePros Logo.svg";
+import Stacai from "../../../../../public/imgs/stacai.svg";
+import Iwaria from "../../../../../public/imgs/iwaria.svg";
+import Beaupreneur from "../../../../../public/imgs/Beaupreneur.svg";
+import John from "../../../../../public/imgs/john.svg";
+import Christiana from "../../../../../public/imgs/christina.svg";
+import ExecutiveProsCEO from "../../../../../public/imgs/executive-pro-ceo.svg";
+import IwariaFounder from "../../../../../public/imgs/iwaria-founder.svg";
+import Edwin from "../../../../../public/imgs/edwin.svg";
+
+export const contentMap: Record<
+  "Starks" | "ExecutivePros" | "Stacai" | "Iwaria" | "Beaupreneur",
+  {
+    id: string;
+    title: string[];
+    description: string[];
+    image: StaticImageData;
+    author: string[];
+    width: string;
+    isRounded?: string;
+    authorImg: StaticImageData;
+    leftPosition: string;
+  }
+> = {
+  Starks: {
+    id: "Starks",
+    title: ["Starks Associate"],
+    description: [
+      "Partnering with Forcythe was like finding a hidden gem. Their genuine interest in our success was palpable, and the continuous support post-launch has been a testament o their commitment. They've become more than a service provider; they're a trusted ally",
+    ],
+    author: ["John, Management"],
+    image: Starks,
+    width: "w-full",
+    isRounded: "rounded-s-full",
+    authorImg: John,
+    leftPosition: "0%",
+  },
+  ExecutivePros: {
+    id: "ExecutivePros",
+    title: ["ExecutivePros"],
+    description: [
+      "The team understood the assignment and delievered very well. One of the things that stood out was ho they took our concepts and turned it into visual appealing designs that caught the eyes of our clients and made increased web engagements. Kudos!",
+    ],
+    author: ["Testimony, Co Founder"],
+    image: ExecutivePros,
+    width: "w-full",
+    authorImg: ExecutiveProsCEO,
+    leftPosition: "20%",
+  },
+  Stacai: {
+    id: "Stacai",
+    title: ["Stac AI"],
+    description: [
+      "Forcythe is seriously amazing when comes to coming up with new ideas. They took our rough ideas and turned them into something incredible online. Their team's commitment to our vision was evident every step of the way",
+    ],
+    author: ["Edwin, Former CTO"],
+    image: Stacai,
+    width: "w-full",
+    authorImg: Edwin,
+    leftPosition: "40%",
+  },
+  Iwaria: {
+    id: "Iwaria",
+    title: ["Iwaria"],
+    description: [
+      "The moment we engageed Forcythe, it was clear they were in a league of their own. Their strategic approach to our project not only enhanced our online platform but also enriched our brand's story, captivating our audience like never before.",
+    ],
+    author: ["Iwaria, Founder"],
+    image: Iwaria,
+    width: "w-20",
+    authorImg: IwariaFounder,
+    leftPosition: "30%",
+  },
+  Beaupreneur: {
+    id: "Beaupreneur",
+    title: ["Beaupreneur:"],
+    description: [
+      "I'm beyond impressed with the dedication Forcythe showed. They didn't just delivered they educated us, involving us in the creative process. The result? A website that truly feels like ours and speaks directly to our customers' heart",
+    ],
+    author: ["Christiana, Founder"],
+    image: Beaupreneur,
+    width: "w-36",
+    isRounded: "rounded-e-full",
+    authorImg: Christiana,
+    leftPosition: "50%",
+  },
+};
+
+export const words = [
+  "Discover",
+  "the",
+  "transfornative",
+  "stories",
+  "of",
+  "startups",
+  "that",
+  "scaled",
+  "new",
+  "heights",
+  "with",
+  "us",
+];

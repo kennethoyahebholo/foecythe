@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
-import { Lexend } from "next/font/google";
+// import { Lexend } from "next/font/google";
 import "./globals.css";
-
-// Import Lexend font with desired weights and subsets
-const lexend = Lexend({
-  variable: "--font-lexend",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"], // Include the font weights you need
-});
 
 export const metadata: Metadata = {
   title:
@@ -23,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${lexend.variable}`}>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

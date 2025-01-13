@@ -3,15 +3,19 @@
 import React from "react";
 import Image, { StaticImageData } from "next/image";
 import { Typewriter } from "react-simple-typewriter";
+import { useInView } from "react-intersection-observer";
 
+import { blogData } from "./Blogs.data";
 import { Button } from "@/components";
 
-import Blog1 from "../../../../../public/imgs/blog.webp";
-import Blog2 from "../../../../../public/imgs/blog2.webp";
-import Blog3 from "../../../../../public/imgs/blog3.webp";
 import PlayIcon from "../../../../../public/svgs/PlayIcon";
 
 const Blogs = () => {
+  const { ref, inView } = useInView({
+    threshold: 0.5,
+    triggerOnce: true,
+  });
+
   const renderBlogList = ({
     link,
     image,
@@ -63,46 +67,25 @@ const Blogs = () => {
     </a>
   );
 
-  const blogData = [
-    {
-      id: 1,
-      link: "https://forcythe.com/blog/will-ai-take-over-art",
-      image: Blog1,
-      title: "Will AI take over Art?",
-      date: "May 29th, 2024",
-      author: "The Reformist",
-    },
-    {
-      id: 2,
-      link: "https://forcythe.com/blog/cryptocurrency-vs-tokens",
-      image: Blog2,
-      title: "Cryptocurrency vs Tokens",
-      date: "May 29th, 2024",
-      author: "The Reformist",
-    },
-    {
-      id: 3,
-      link: "https://forcythe.com/blog/cryptocurrency-and-crypto-asset",
-      image: Blog3,
-      title: "Cryptocurrency and Crypto asset",
-      date: "May 29th, 2024",
-      author: "The Reformist",
-    },
-  ];
   return (
     <div className="section-margin my-10 lg:mb-24">
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-12">
+      <div
+        ref={ref}
+        className="flex flex-col md:flex-row md:justify-between md:items-center mb-12"
+      >
         <div>
           <div>
             <p className="text-white text-[2rem] leading-[2.5rem] sm:text-[2.2rem] sm:leading-[2.5rem] lg:text-[2.6rem] lg:leading-[3rem] mb-6 sm:mb-4 md:mb-0">
-              <Typewriter
-                words={["Read our articles, news and product blog"]}
-                loop={1}
-                cursor={false}
-                typeSpeed={70}
-                deleteSpeed={0}
-                delaySpeed={1000}
-              />
+              {inView && (
+                <Typewriter
+                  words={["Read our articles, news and product blog"]}
+                  loop={1}
+                  cursor={false}
+                  typeSpeed={70}
+                  deleteSpeed={0}
+                  delaySpeed={1000}
+                />
+              )}
             </p>
           </div>
         </div>
