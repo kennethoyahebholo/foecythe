@@ -37,7 +37,7 @@ const Blogs = () => {
     author,
   }: {
     link: string;
-    image: any;
+    image: StaticImageData;
     title: string;
     date: string;
     author: string;
