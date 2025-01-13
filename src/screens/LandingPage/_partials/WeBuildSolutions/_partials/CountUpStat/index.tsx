@@ -9,7 +9,7 @@ const CountUpStat = ({ value, label, suffix = "", inView }: StatItem) => {
   useEffect(() => {
     if (inView) {
       let start = 0;
-      const duration = 1000; // Duration of animation in ms
+      const duration = 2000; // Duration of animation in ms
       const increment = value / (duration / 16); // Increment per frame (assuming ~60fps)
 
       const interval = setInterval(() => {

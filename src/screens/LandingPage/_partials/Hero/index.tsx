@@ -17,7 +17,7 @@ const Hero = () => {
   const [visibleWordsSubText, setVisibleWordsSubText] = useState<number>(0);
   const [isHeroTextCompleted, setIsHeroTextCompleted] = useState(false);
   const { ref, inView } = useInView({
-    threshold: 0.5,
+    threshold: 0,
     triggerOnce: true,
   });
 
