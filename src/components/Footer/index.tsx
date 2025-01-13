@@ -1,15 +1,33 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
 
+import { appRoutes, socialLinks } from "./Footer.data";
+
 import Logo from "../../../public/imgs/forcythe logo.svg";
-import Facebook from "../../../public/imgs/facebook.svg";
-import Instagram from "../../../public/imgs/instagram.svg";
-import LinkedIn from "../../../public/imgs/linkedin.svg";
-import X from "../../../public/imgs/x.svg";
-import YouTube from "../../../public/imgs/youtube.svg";
-import Podcast from "../../../public/imgs/Icon.svg";
 
 const Footer = () => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsChecked((prev) => !prev);
+  };
+  const RenderSocialLinks = ({ src, link }: { src: string; link: string }) => (
+    <a
+      href={link}
+      target="_blank"
+      className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
+    >
+      <Image
+        src={src}
+        alt="social"
+        height="20"
+        width="20"
+        style={{ color: "transparent" }}
+      />
+    </a>
+  );
   return (
     <div className="section-padding py-10 bg-secondaryBackground">
       <div className="lg:grid lg:grid-cols-3 my-10">
@@ -25,17 +43,31 @@ const Footer = () => {
             </button>
           </div>
           <div className="flex gap-3 mt-5 items-center text-white">
-            <div className="w-5 h-5 border-2 rounded-full bg-transparent border-white cursor-pointer flex items-center justify-center">
-              <input
-                type="checkbox"
-                name="agreement"
-                id="agreement"
-                className="hidden"
-              />
+            <div
+              className="flex items-center gap-3"
+              onClick={handleCheckboxChange}
+            >
+              <div
+                className={`w-5 h-5 border-2 rounded-full bg-transparent cursor-pointer flex items-center justify-center ${
+                  isChecked ? "" : "border-white"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  name="agreement"
+                  id="agreement"
+                  checked={isChecked}
+                  onChange={handleCheckboxChange}
+                  className="hidden"
+                />
+                {isChecked && (
+                  <div className="w-[8px] h-[8px] bg-white rounded-full"></div> // Represents the filled circle
+                )}
+              </div>
+              <label htmlFor="agreement" className="text-sm cursor-pointer">
+                I agree to receive other notifications from Forcythe
+              </label>
             </div>
-            <label htmlFor="agreement" className="text-sm cursor-pointer">
-              I agree to receive other notifications from Forcythe
-            </label>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:col-span-2 gap-10 md:gap-0 ">
@@ -54,204 +86,26 @@ const Footer = () => {
               solutions that drive growth.
             </p>
             <div className="mt-10 hidden md:flex items-center gap-2">
-              <a
-                href="https://web.facebook.com/forcythe"
-                target="_blank"
-                className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
-              >
-                <Image
-                  src={Facebook}
-                  alt="social"
-                  height="20"
-                  width="20"
-                  style={{ color: "transparent" }}
-                />
-              </a>
-              <a
-                href="https://www.instagram.com/forcythe"
-                target="_blank"
-                className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
-              >
-                <Image
-                  src={Instagram}
-                  alt="social"
-                  height="20"
-                  width="20"
-                  style={{ color: "transparent" }}
-                />
-              </a>
-              <a
-                href="https://twitter.com/forcythe_"
-                target="_blank"
-                className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
-              >
-                <Image
-                  src={X}
-                  alt="social"
-                  height="20"
-                  width="20"
-                  style={{ color: "transparent" }}
-                />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/forcythe/"
-                target="_blank"
-                className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
-              >
-                <Image
-                  src={LinkedIn}
-                  alt="social"
-                  height="20"
-                  width="20"
-                  style={{ color: "transparent" }}
-                />
-              </a>
-              <a
-                href="https://www.youtube.com/@forcythe"
-                target="_blank"
-                className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
-              >
-                <Image
-                  src={YouTube}
-                  alt="social"
-                  height="20"
-                  width="20"
-                  style={{ color: "transparent" }}
-                />
-              </a>
-              <a
-                href="https://creators.spotify.com/pod/show/the-future-insight"
-                target="_blank"
-                className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
-              >
-                <Image
-                  src={Podcast}
-                  alt="social"
-                  height="20"
-                  width="20"
-                  style={{ color: "transparent" }}
-                />
-              </a>
+              {socialLinks?.map(({ id, link, icon }) => (
+                <RenderSocialLinks key={id} src={icon} link={link} />
+              ))}
             </div>
           </div>
           <div className="lg:pl-10">
             <h3 className="mb-8 text-2xl font-bold text-white">Company</h3>
             <ul className="flex flex-col gap-2">
-              <li className="text-base text-accent2 font-medium">
-                <a href="/about">
-                  <span>About</span>
-                </a>
-              </li>
-              <li className="text-base text-accent2 font-medium">
-                <a href="/services">
-                  <span>Services</span>
-                </a>
-              </li>
-              <li className="text-base text-accent2 font-medium">
-                <a href="/service#portfolio">
-                  <span>Portfolio</span>
-                </a>
-              </li>
-              <li className="text-base text-accent2 font-medium">
-                <a href="/studio">
-                  <span>Studio</span>
-                </a>
-              </li>
-              <li className="text-base text-accent2 font-medium">
-                <a href="/soundation">
-                  <span>Foundation</span>
-                </a>
-              </li>
-              <li className="text-base text-accent2 font-medium">
-                <a href="/careers">
-                  <span>Careers</span>
-                </a>
-              </li>
-              <li className="text-base text-accent2 font-medium">
-                <a href="/blog">
-                  <span>Blog</span>
-                </a>
-              </li>
+              {appRoutes?.map(({ id, path, title }) => (
+                <li key={id} className="text-base text-accent2 font-medium">
+                  <a href={path}>
+                    <span>{title}</span>
+                  </a>
+                </li>
+              ))}
             </ul>
             <div className="mt-10 flex md:hidden items-center gap-2 w-fit mx-auto">
-              <a
-                href="https://web.facebook.com/forcythe"
-                target="_blank"
-                className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
-              >
-                <Image
-                  src={Facebook}
-                  alt="social"
-                  height="20"
-                  width="20"
-                  style={{ color: "transparent" }}
-                />
-              </a>
-              <a
-                href="https://www.instagram.com/forcythe"
-                target="_blank"
-                className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
-              >
-                <Image
-                  src={Instagram}
-                  alt="social"
-                  height="20"
-                  width="20"
-                  style={{ color: "transparent" }}
-                />
-              </a>
-              <a
-                href="https://twitter.com/forcythe_"
-                target="_blank"
-                className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
-              >
-                <Image
-                  src={X}
-                  alt="social"
-                  height="20"
-                  width="20"
-                  style={{ color: "transparent" }}
-                />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/forcythe/"
-                target="_blank"
-                className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
-              >
-                <Image
-                  src={LinkedIn}
-                  alt="social"
-                  height="20"
-                  width="20"
-                  style={{ color: "transparent" }}
-                />
-              </a>
-              <a
-                href="https://www.youtube.com/@forcythe"
-                target="_blank"
-                className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
-              >
-                <Image
-                  src={YouTube}
-                  alt="social"
-                  height="20"
-                  width="20"
-                  style={{ color: "transparent" }}
-                />
-              </a>
-              <a
-                href="https://creators.spotify.com/pod/show/the-future-insight"
-                target="_blank"
-                className="w-9 h-9 cursor-pointer rounded-full border-[1px] border-accent flex justify-center items-center"
-              >
-                <Image
-                  src={Podcast}
-                  alt="social"
-                  height="20"
-                  width="20"
-                  style={{ color: "transparent" }}
-                />
-              </a>
+              {socialLinks?.map(({ id, link, icon }) => (
+                <RenderSocialLinks key={id} src={icon} link={link} />
+              ))}
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
 
+import { appRoutes } from "../Footer/Footer.data";
 import Button from "../Button";
 
 import Logo from "../../../public/imgs/forcythe logo.svg";
@@ -18,21 +19,11 @@ const Header = () => {
           <Image src={Logo} alt="log" />
 
           <div className="hidden md:flex item-center gap-2 lg:gap-4 text-base text-white">
-            <a href="/about">
-              <span>About</span>
-            </a>
-            <a href="/services">
-              <span>Services</span>
-            </a>
-            <a href="/services#portfolio">
-              <span className="">Portfolio</span>
-            </a>
-            <a href="/studio">
-              <span>Studio</span>
-            </a>
-            <a href="/foundation">
-              <span>Foundation</span>
-            </a>
+            {appRoutes?.slice(0, 5).map(({ id, path, title }) => (
+              <a key={id} href={path}>
+                <span>{title}</span>
+              </a>
+            ))}
           </div>
         </div>
 
@@ -70,44 +61,13 @@ const Header = () => {
                 }}
               >
                 <ul className="flex flex-col">
-                  <li className="w-full py-2.5">
-                    <a className="w-full text-base py-3" href="/about">
-                      <span>About</span>
-                    </a>
-                  </li>
-                  <li className="w-full py-2.5">
-                    <a className="w-full text-base py-3" href="/services">
-                      <span>Services</span>
-                    </a>
-                  </li>
-                  <li className="w-full py-2.5">
-                    <a
-                      className="w-full text-base py-3"
-                      href="/services#portfolio"
-                    >
-                      <span>Portfolio</span>
-                    </a>
-                  </li>
-                  <li className="w-full py-2.5">
-                    <a className="w-full text-base py-3" href="/studio">
-                      <span>Studio</span>
-                    </a>
-                  </li>
-                  <li className="w-full py-2.5">
-                    <a className="w-full text-base py-3" href="/foundation">
-                      <span>Foundation</span>
-                    </a>
-                  </li>
-                  <li className="w-full py-2.5">
-                    <a className="w-full text-base py-3" href="/career">
-                      <span>Careers</span>
-                    </a>
-                  </li>
-                  <li className="w-full py-2.5">
-                    <a className="w-full text-base py-3" href="/blog">
-                      <span>Blog</span>
-                    </a>
-                  </li>
+                  {appRoutes?.map(({ id, path, title }) => (
+                    <li key={id} className="w-full py-2.5">
+                      <a className="w-full text-base py-3" href={path}>
+                        <span>{title}</span>
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
