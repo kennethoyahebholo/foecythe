@@ -1,6 +1,6 @@
-import Blog1 from "../../../../../public/imgs/blog.webp";
-import Blog2 from "../../../../../public/imgs/blog2.webp";
-import Blog3 from "../../../../../public/imgs/blog3.webp";
+import Blog1 from "../../../../../public/imgs/blog.jpg";
+import Blog2 from "../../../../../public/imgs/blog2.jpg";
+import Blog3 from "../../../../../public/imgs/blog3.jpg";
 
 export const blogData = [
   {
