@@ -71,11 +71,11 @@ const WhatWeOffer = () => {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-7 md:gap-7 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 md:gap-7 ">
         {data.map(({ id, headText, subText }) => (
           <div
             key={id}
-            className="relative min-h-[290px] rounded-2xl group overflow-hidden"
+            className="relative min-h-[340px] xs:min-h-[380px] xl:min-h-[340px] xxl:min-h-[290px] rounded-2xl group overflow-hidden"
           >
             {/* Border Animation */}
             <div className="absolute inset-0 rounded-2xl before:absolute before:inset-[-50%] before:bg-[conic-gradient(transparent,transparent,white)] before:animate-spin-slow before:transition-none before:group-hover:hidden">
