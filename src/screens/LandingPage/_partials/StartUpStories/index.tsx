@@ -2,16 +2,59 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Typewriter } from "react-simple-typewriter";
+import { useInView } from "react-intersection-observer";
 
 import { contentMap, words } from "./StartUpStories.data";
-import useInViewTypingEffect from "@/utils/useInViewTypingEffect";
 import { IActiveTab } from "./StartUpStories.types";
 
 const StartUpStories = () => {
   const [showAuthor, setShowAuthor] = useState(false);
   const [activeTab, setActiveTab] = useState<IActiveTab>("Starks");
-  const { visibleWords, ref } = useInViewTypingEffect(words, 300, 0.5);
+  const { ref, inView } = useInView({
+    threshold: 0.5,
+    triggerOnce: true,
+  });
+  const [visibleWords, setVisibleWords] = useState<number>(0);
+  const [visibleTitleWords, setVisibleTitleWords] = useState<number>(0);
+  const [visibleDescriptionWords, setVisibleDescriptionWords] =
+    useState<number>(0);
+  const [visibleAuthorWords, setVisibleAuthorWords] = useState<number>(0);
+
+  useEffect(() => {
+    if (inView) {
+      const interval = setInterval(() => {
+        setVisibleWords((prev) => (prev < words.length ? prev + 1 : prev));
+      }, 300);
+
+      // Reveal title words
+      const titleInterval = setInterval(() => {
+        setVisibleTitleWords((prev) =>
+          prev < contentMap[activeTab]?.title.length ? prev + 1 : prev
+        );
+      }, 300);
+
+      // Reveal description words
+      const descriptionInterval = setInterval(() => {
+        setVisibleDescriptionWords((prev) =>
+          prev < contentMap[activeTab]?.description.length ? prev + 1 : prev
+        );
+      }, 300);
+
+      // Reveal author words
+      const authorInterval = setInterval(() => {
+        setVisibleAuthorWords((prev) =>
+          prev < contentMap[activeTab]?.author.length ? prev + 1 : prev
+        );
+      }, 300);
+
+      return () => {
+        clearInterval(titleInterval);
+        clearInterval(authorInterval);
+        clearInterval(descriptionInterval);
+        clearInterval(interval);
+      };
+    }
+  }, [inView, activeTab]);
 
   // Handle auto-switching of tabs
   useEffect(() => {
@@ -22,6 +65,9 @@ const StartUpStories = () => {
         const nextIndex = (currentIndex + 1) % tabIds.length;
         return tabIds[nextIndex] as typeof activeTab;
       });
+      setVisibleTitleWords(0); // Reset for new tab
+      setVisibleDescriptionWords(0); // Reset for new tab
+      setVisibleAuthorWords(0); // Reset for new tab
     }, 20000); // Switch every 15 seconds
 
     return () => clearInterval(interval); // Cleanup interval
@@ -59,16 +105,12 @@ const StartUpStories = () => {
           {Object.values(contentMap).map((tab, index) => (
             <div
               key={index + 1}
-              onClick={() =>
-                setActiveTab(
-                  tab.id as
-                    | "Starks"
-                    | "ExecutivePros"
-                    | "Stacai"
-                    | "Iwaria"
-                    | "Beaupreneur"
-                )
-              }
+              onClick={() => {
+                setActiveTab(tab.id as IActiveTab);
+                setVisibleTitleWords(0); // Reset for new tab
+                setVisibleDescriptionWords(0); // Reset for new tab
+                setVisibleAuthorWords(0); // Reset for new tab
+              }}
               className={`w-full p-[1.1rem] cursor-pointer false transition-all duration-300 ${
                 tab.isRounded
               } ${activeTab === tab.id && "bg-accent3"}`}
@@ -99,39 +141,53 @@ const StartUpStories = () => {
         <div className="sm:basis-[58%] pr-3 min-h-[291px] flex flex-col justify-between">
           <div>
             <p className="text-base font-bold mb-4">
-              <Typewriter
-                key={activeTab + "-title"}
-                words={contentMap[activeTab as IActiveTab].title}
-                loop={1}
-                cursor={false}
-                typeSpeed={70}
-                deleteSpeed={0}
-                delaySpeed={1000}
-              />
+              {contentMap[activeTab]?.title.map((word, index) => {
+                return (
+                  <span
+                    key={index}
+                    className={`inline-block transition-opacity duration-500 ${
+                      index < visibleTitleWords ? "opacity-100" : "opacity-0"
+                    }`}
+                    style={{ marginRight: "0.5rem" }}
+                  >
+                    {word}
+                  </span>
+                );
+              })}
             </p>
             <p className="text-base leading-7 mb-3">
-              <Typewriter
-                key={activeTab + "-description"}
-                words={contentMap[activeTab as IActiveTab].description}
-                loop={1}
-                cursor={false}
-                typeSpeed={70}
-                deleteSpeed={0}
-                delaySpeed={1000}
-              />
+              {contentMap[activeTab]?.description.map((word, index) => {
+                return (
+                  <span
+                    key={index}
+                    className={`inline-block transition-opacity duration-500 ${
+                      index < visibleDescriptionWords
+                        ? "opacity-100"
+                        : "opacity-0"
+                    }`}
+                    style={{ marginRight: "0.5rem" }}
+                  >
+                    {word}
+                  </span>
+                );
+              })}
             </p>
           </div>
           {showAuthor && (
             <p className="text-[15px] font-semibold mb-4">
-              <Typewriter
-                key={activeTab + "-arthur"}
-                words={contentMap[activeTab as IActiveTab].author}
-                loop={1}
-                cursor={false}
-                typeSpeed={70}
-                deleteSpeed={0}
-                delaySpeed={1000}
-              />
+              {contentMap[activeTab]?.author.map((word, index) => {
+                return (
+                  <span
+                    key={index}
+                    className={`inline-block transition-opacity duration-500 ${
+                      index < visibleAuthorWords ? "opacity-100" : "opacity-0"
+                    }`}
+                    style={{ marginRight: "0.5rem" }}
+                  >
+                    {word}
+                  </span>
+                );
+              })}
             </p>
           )}
         </div>
